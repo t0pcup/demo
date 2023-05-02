@@ -128,8 +128,8 @@ let map = new Map({
     }),
 });
 
-// const extent = getProjection('EPSG:3857').getExtent().slice();
-const extent = getProjection(projection.value).getExtent().slice();
+ const extent = getProjection('EPSG:3857').getExtent().slice();
+//const extent = getProjection(projection.value).getExtent().slice();
 extent[0] += extent[0];
 extent[2] += extent[2];
 const projectionSelect = document.getElementById('projection');
@@ -256,7 +256,7 @@ document.getElementById('clear').addEventListener('click', function () {
 document.getElementById("exportBtn").addEventListener('click', function () {
     var features = source.getFeatures();
     var json = new GeoJSON().writeFeatures(features, {
-        dataProjection: projection.value, featureProjection: 'EPSG:3857'
+        dataProjection: 'EPSG:3857', featureProjection: 'EPSG:3857'
     });
     function download(content, fileName, contentType) {
         var a = document.createElement("a");
@@ -304,7 +304,7 @@ document.getElementById("exportBtnL").addEventListener('click', function () {
         }
     }
     var json = new GeoJSON().writeFeatures(feat, {
-        dataProjection: projection.value, featureProjection: 'EPSG:3857'
+        dataProjection: 'EPSG:3857', featureProjection: 'EPSG:3857'
     });
     function download_l(content, fileName, contentType) {
         var a = document.createElement("a");
@@ -341,6 +341,15 @@ document.getElementById("clearBtnL").addEventListener('click', function () {
     for (let i = 1; i < lst.length; i++) {
         map.addLayer(lst[i]);
     }
+});
+document.getElementById("clearBtnI").addEventListener('click', function () {
+    var lst = [];
+    for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
+        if (map.getLayers().array_[i].values_['zIndex'] !== 2) {
+            lst.push(map.getLayers().array_[i])
+        }
+    }
+    map.setLayers(lst)
 });
 let my_str;
 
@@ -645,7 +654,7 @@ function onChangeProjection() { // TODO 24.03
     if (remember.length > 0) {
         my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_2}?SERVICE=WMS&REQUEST=GetMap&CRS=${viewProjSelect.value}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=NATURAL-COLOR&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=2018-03-29/2018-05-29&GEOMETRY=${wktRepresenation}`
 //        console.log(my_str)
-        var img_ext = olProj.transformExtent(Bound, projection.value, projection.value) // EPSG:4326 3857
+        var img_ext = olProj.transformExtent(Bound, 'EPSG:3857', 'EPSG:3857') // EPSG:4326 3857
         var imageLayer = new ImageLayer({
             source: new ImageStatic({
                 url: my_str,
@@ -953,14 +962,11 @@ function setUrl(startDate, finishDate, url, wktRepresenation) {
     const sent = 'b351739d-40a8-4e8a-b943-701ef8249e08'
     const layer = 'IW_VV_DB'
     console.log("SET_URL:", startDate, finishDate, url, wktRepresenation)
-    // TODO
-    // const my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_2}?SERVICE=WMS&REQUEST=GetMap&SHOWLOGO=false&VERSION=1.3.0&LAYERS=NATURAL-COLOR&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=2018-03-29/2018-05-29&GEOMETRY=${wktRepresenation}`
-    //my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_2}?SERVICE=WMS&REQUEST=GetMap&CRS=${projection.value}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=NATURAL-COLOR&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=${startDate0}/${startDate}&GEOMETRY=${wktRepresenation}`
-    my_str = `http://services.sentinel-hub.com/ogc/wms/${sent}?SERVICE=WMS&REQUEST=GetMap&CRS=${projection.value}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=${layer}&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=${startDate}/${finishDate}&GEOMETRY=${wktRepresenation}`
+    const pr = 'EPSG:3857'
+    my_str = `http://services.sentinel-hub.com/ogc/wms/${sent}?SERVICE=WMS&REQUEST=GetMap&CRS=${pr}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=${layer}&MAXCC=1&WIDTH=256&HEIGHT=256&FORMAT=image/jpeg&TIME=${startDate}/${finishDate}&GEOMETRY=${wktRepresenation}`
 //    console.log(my_str)
     localStorage.setItem(url, my_str)
 }
-
 function getFirstImage(startDate, finishDate) {
     var lst = [];
     for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
@@ -985,7 +991,7 @@ function getFirstImage(startDate, finishDate) {
         var format = new WKT();
         var geom = [];
         if (features.length === 1) {
-            wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform(projection.value, 'EPSG:3857'));
+            wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform('EPSG:3857', 'EPSG:3857'));
             Bound = features[0].getGeometry().getExtent();
 //            console.log(Bound)
 
@@ -1002,7 +1008,7 @@ function getFirstImage(startDate, finishDate) {
         }
     }
     setUrl(startDate, finishDate, 'url', wktRepresenation)
-    var img_ext = olProj.transformExtent(Bound, projection.value, projection.value) // EPSG:4326 3857
+    var img_ext = olProj.transformExtent(Bound, 'EPSG:3857', 'EPSG:3857') // EPSG:4326 3857
     var imageLayer = new ImageLayer({
         source: new ImageStatic({
             url: my_str,
@@ -1175,7 +1181,7 @@ Vue.component('order-card-row', {
                 var format = new WKT();
                 var geom = [];
                 if (features.length === 1) {
-                    wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform(projection.value, 'EPSG:3857'));
+                    wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform('EPSG:3857', 'EPSG:3857'));
                     Bound = features[0].getGeometry().getExtent();
                     console.log(Bound)
 
@@ -1283,7 +1289,7 @@ Vue.component('order-row', {
                     '<div v-if="order.status === true"><div>Завершен: {{new Date(order.finishedAt).toLocaleString("ru-RU")}}</div></div>' +
                     '<div><button v-if="isReady === true" @click="showResult(order.result)" class="btn btn-primary m-1">РЕЗУЛЬТАТ</button></div>' +
                     '<div><button v-if="isReady === true" @click="showImage(order.url, order.bbox)" class="btn btn-primary m-1">ПОКАЗАТЬ СНИМОК</button></div>' +
-                    '<div><button v-if="isReady === true" @click="hideImage()" class="btn btn-primary m-1">СКРЫТЬ СНИМОК</button></div>' +
+//                    '<div><button v-if="isReady === true" @click="hideImage()" class="btn btn-primary m-1">СКРЫТЬ СНИМОК</button></div>' +
                     '<div><button @click="deleteOrder(order)" class="btn btn-danger">Удалить заказ</button></div>' +
                 '</div>' +
             '</div>' +
@@ -1295,7 +1301,7 @@ Vue.component('order-row', {
                     '<div v-if="order.status === true"><div>Завершен: {{new Date(order.finishedAt).toLocaleString("ru-RU")}}</div></div>' +
                     '<div><button v-if="isReady === true" @click="showResult(order.result)" class="btn btn-primary m-1">РЕЗУЛЬТАТ</button></div>' +
                     '<div><button v-if="isReady === true" @click="showImage(order.url, order.bbox)" class="btn btn-primary m-1">ПОКАЗАТЬ СНИМОК</button></div>' +
-                    '<div><button v-if="isReady === true" @click="hideImage()" class="btn btn-primary m-1">СКРЫТЬ СНИМОК</button></div>' +
+//                    '<div><button v-if="isReady === true" @click="hideImage()" class="btn btn-primary m-1">СКРЫТЬ СНИМОК</button></div>' +
                     '<div><button @click="deleteOrder(order)" class="btn btn-danger">Удалить заказ</button></div>' +
                 '</div>' +
             '</div>' +
@@ -1352,13 +1358,13 @@ Vue.component('order-row', {
                 var format = new WKT();
                 var geom = [];
                 if (features.length === 1) {
-                    wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform(projection.value, 'EPSG:3857'));
+                    wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform('EPSG:3857', 'EPSG:3857'));
                     Bound = features[0].getGeometry().getExtent();
                 } else {
                     // TODO: сделать не только для двух полигонов
                     var olGeom = new UnaryUnionOp(features[0].getGeometry(), features[1].getGeometry());
                     wktRepresenation = format.writeGeometry(olGeom._geomFact);
-                    Bound = olProj.transformExtent(olGeom._geomFact.getExtent(), projection.value, projection.value);
+                    Bound = olProj.transformExtent(olGeom._geomFact.getExtent(), 'EPSG:3857', 'EPSG:3857');
                 }
             }
 
@@ -1376,7 +1382,27 @@ Vue.component('order-row', {
             source.clear();
         },
         showResult(res) {
-            var coords = JSON.parse(res).features[0].geometry.coordinates
+            //            var lst_clear = [];
+//            for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
+//                if (map.getLayers().array_[i].values_['zIndex'] !== 1 || map.getLayers().array_[i].values_['zIndex'] !== 3) {
+//                    lst_clear.push(map.getLayers().array_[i])
+//                }
+//            }
+            var lst_keep = [];
+            for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
+                if (map.getLayers().array_[i].values_['zIndex'] === 3) {
+                    lst_keep.push(map.getLayers().array_[i])
+                }
+            }
+
+            map.setLayers([styles[styleSelector.value]]);
+            for (let i = 0, ii = lst_keep.length; i < ii; ++i) {
+                map.addLayer(lst_keep[i])
+            }
+
+            console.log(res);
+            console.log(res.split('\n')[0]);
+            var coords = JSON.parse(res.split('\n')[0]).features[0].geometry.coordinates;
 
             const feature = new Feature({
                 geometry: new MultiPolygon(coords)
@@ -1386,21 +1412,18 @@ Vue.component('order-row', {
                 features: [feature],
             });
 
-            lst.push(vectorSource)
-
-            var lst_clear = [];
-            for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
-                if (map.getLayers().array_[i].values_['zIndex'] !== 1 || map.getLayers().array_[i].values_['zIndex'] !== 3) {
-                    lst_clear.push(map.getLayers().array_[i])
-                }
-            }
-
-            map.setLayers([styles[styleSelector.value]]);
-
+            lst.push(vectorSource);
             map.addLayer(
                 new VectorLayer({
                     source: vectorSource,
-                    zIndex: 3
+                    zIndex: 3,
+                    style: {
+                            'fill-color': 'rgba(255, 0, 0, 0.2)',
+                            'stroke-color': '#000000',
+                            'stroke-width': 2,
+                            'circle-radius': 5,
+                            'circle-fill-color': '#ff0000',
+                        },
                 })
             );
             map.getView().fit(vectorSource.getExtent());

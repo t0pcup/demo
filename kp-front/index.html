@@ -345,6 +345,9 @@
                                 <button class="exportBtn dropdown-item" type="button" id="exportBtnL">
                                     <span>Скачать результат</span>
                                 </button>
+                                <button class="exportBtn dropdown-item" type="button" id="clearBtnI">
+                                    <span>Скрыть снимок</span>
+                                </button>
                             </div>
                         </div>
                     </td>
@@ -387,24 +390,26 @@
         <!--                <button class="StepaBtn" type="button" id="StepaBtn"><span>CREATE ORDER</span></button>-->
         <!--            </div>-->
         <div id="overlay" class="overlay">
-            <div>EPGS:4326
+            <div>EPSG:4326
                 <div id="mouse-position"></div>
             </div>
-            <div>EPGS:3857
+            <div>EPSG:3857
                 <div id="mouse-position2"></div>
             </div>
 
             <form>
                 <label for="precision">Precision</label>
-                <input id="precision" type="number" min="0" max="12" value="4"/>
-                <select id="projection">
-                    <option value="EPSG:3857">EPSG:3857</option>
-                </select>
+                <input id="precision" type="number" min="0" max="15" value="4"/>
                 <label for="style"></label>
                 <select id="style">
                     <option value="layer_schema">Schema</option>
                     <option value="layer_sat">Satellite</option>
                 </select>
+                <p id="projection">Projection: EPSG:3857</p>
+<!--                <select id="projection">-->
+<!--                    <option value="EPSG:3857">EPSG:3857</option>-->
+<!--                </select>-->
+
             </form>
         </div>
     </div>
