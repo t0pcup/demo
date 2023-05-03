@@ -71,7 +71,6 @@ const scaleControl = new ScaleLine({
     minWidth: 100,
     maxWidth: 150,
 });
-// const shapeSelect = document.getElementById('shapeType');
 
 const source = new VectorSource({wrapX: false});
 const vector = new VectorLayer({
@@ -87,7 +86,6 @@ const vector = new VectorLayer({
 
 const layer_sat = new TileLayer({
     source: new XYZ({
-        // attributions: attributions,
         url:
             'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=' + key,
         maxZoom: 15,
@@ -100,22 +98,15 @@ const layer_schema = new TileLayer({
     }),
 });
 
-// document.querySelector('#app').innerHTML = `
-// <div></div>
-// `
 const mousePositionControl = new MousePosition({
     coordinateFormat: createStringXY(4),
-    projection: 'EPSG:4326',//
-    // comment the following two lines to have the mouse position
-    // be placed within the map.
+    projection: 'EPSG:4326',
     className: 'custom-mouse-position',
     target: document.getElementById('mouse-position'),
 });
 const mousePositionControl2 = new MousePosition({
     coordinateFormat: createStringXY(4),
-    projection: 'EPSG:3857',// projection.value
-    // comment the following two lines to have the mouse position
-    // be placed within the map.
+    projection: 'EPSG:3857',
     className: 'custom-mouse-position2',
     target: document.getElementById('mouse-position2'),
 });
@@ -131,13 +122,8 @@ let map = new Map({
 });
 
  const extent = getProjection('EPSG:3857').getExtent().slice();
-//const extent = getProjection(projection.value).getExtent().slice();
 extent[0] += extent[0];
 extent[2] += extent[2];
-//projectionSelect.addEventListener('change', function (event) {
-//    mousePositionControl.setProjection(event.target.value);
-//    mousePositionControl2.setProjection(event.target.value);
-//});
 const precisionInput = document.getElementById('precision');
 precisionInput.addEventListener('change', function (event) {
     const format = createStringXY(event.target.valueAsNumber);
@@ -155,12 +141,7 @@ function setInteraction() {
     }
     dragAndDropInteraction = new DragAndDrop({
         formatConstructors: [
-            // GPX,
             GeoJSON,
-            // IGC,
-            // use constructed format to set options
-            // new KML({extractStyles: extractStyles.checked}),
-            // TopoJSON,
         ],
     });
     dragAndDropInteraction.on('addfeatures', function (event) {
@@ -189,7 +170,6 @@ function setInteraction() {
 }
 
 setInteraction();
-// extractStyles.addEventListener('change', setInteraction);
 
 const displayFeatureInfo = function (pixel) {
     const features = [];
@@ -355,182 +335,6 @@ document.getElementById("clearBtnI").addEventListener('click', function () {
 let my_str;
 
 
-// document.getElementById("imgSearchBtn").addEventListener('click', function () {
-//     let startDate = document.getElementById("startDatepicker").value
-//     if (startDate.length === 0) {
-//         startDate = "2020" + "-" + "06" + "-" + "02"
-//     } else {
-//         startDate = startDate.split('/')
-//         startDate = startDate[2] + "-" + startDate[0] + "-" + startDate[1]
-//     }
-//
-//     const date = new Date(startDate);
-//     date.setDate(date.getDate() - 15);
-//     console.log(date)
-//
-//     const year = date.getFullYear();
-//     let month = date.getMonth() + 1;
-//     let day = date.getDate();
-//
-//     if (month < 10) {
-//         month = "0" + month.toString();
-//     }
-//     if (day < 10) {
-//         day = "0" + day.toString();
-//     }
-//
-//     const startDate0 = [year, month, day].join('-')
-//
-//     // let finishDate = document.getElementById("finishDatepicker").value.split('/')
-//     // finishDate = finishDate[2] + "-" + finishDate[0] + "-" + finishDate[1]
-//
-//     var lst = [];
-//     for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
-//         if (map.getLayers().array_[i].values_['zIndex'] !== 0) {
-//             lst.push(map.getLayers().array_[i])
-//         }
-//     }
-//
-//     map.setLayers(lst)
-//
-//     var features = source.getFeatures();
-//     var wktRepresenation;
-//     var Bound;
-//     if (features.length === 0) {
-//         if (zoneOfInterest.length === 0) {
-//             console.log("no shapes");
-//         } else {
-//             wktRepresenation = varwkt;
-//             Bound = varbound;
-//
-//         }
-//     } else {
-//         var format = new WKT();
-//         var geom = [];
-//         if (features.length === 1) {
-//             wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform(projection.value, 'EPSG:3857'));
-//             Bound = features[0].getGeometry().getExtent();
-//             console.log(Bound)
-//
-//             zoneOfInterest = features;
-//             console.log(zoneOfInterest)
-//
-//             varwkt = wktRepresenation;
-//             varbound = Bound;
-//         } else {
-//             // TODO: сделать не только для двух полигонов
-//             var olGeom = new UnaryUnionOp(features[0].getGeometry(), features[1].getGeometry());
-//             wktRepresenation = format.writeGeometry(olGeom._geomFact);
-//             Bound = olGeom._geomFact.getExtent();
-//         }
-//     }
-//
-//     // TODO
-//     // const my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_2}?SERVICE=WMS&REQUEST=GetMap&SHOWLOGO=false&VERSION=1.3.0&LAYERS=NATURAL-COLOR&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=2018-03-29/2018-05-29&GEOMETRY=${wktRepresenation}`
-//     //my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_2}?SERVICE=WMS&REQUEST=GetMap&CRS=${projection.value}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=NATURAL-COLOR&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=${startDate0}/${startDate}&GEOMETRY=${wktRepresenation}`
-//     my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_1}?SERVICE=WMS&REQUEST=GetMap&CRS=${projection.value}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=VV&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=${startDate0}/${startDate}&GEOMETRY=${wktRepresenation}`
-//     console.log(my_str)
-//     localStorage.setItem('url', my_str)
-//     var img_ext = olProj.transformExtent(Bound, projection.value, projection.value) // EPSG:4326 3857
-//     var imageLayer = new ImageLayer({
-//         source: new ImageStatic({
-//             url: my_str,
-//             imageExtent: img_ext // east, north, west, south
-//         }),
-//         zIndex: 0
-//     });
-//     map.addLayer(imageLayer);
-//     source.clear();
-// });
-//
-// document.getElementById("imgSearchBtn2").addEventListener('click', function () {
-//     let startDate = document.getElementById("finishDatepicker").value
-//
-//     if (startDate.length === 0) {
-//         startDate = "2020" + "-" + "06" + "-" + "02"
-//     } else {
-//         startDate = startDate.split('/')
-//         startDate = startDate[2] + "-" + startDate[0] + "-" + startDate[1]
-//     }
-//
-//     const date = new Date(startDate);
-//     date.setDate(date.getDate() - 15);
-//     console.log(date)
-//
-//     const year = date.getFullYear();
-//     let month = date.getMonth() + 1;
-//     let day = date.getDate();
-//
-//     if (month < 10) {
-//         month = "0" + month.toString();
-//     }
-//     if (day < 10) {
-//         day = "0" + day.toString();
-//     }
-//
-//     const startDate0 = [year, month, day].join('-')
-//
-//     // let finishDate = document.getElementById("finishDatepicker").value.split('/')
-//     // finishDate = finishDate[2] + "-" + finishDate[0] + "-" + finishDate[1]
-//
-//     var lst = [];
-//     for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
-//         if (map.getLayers().array_[i].values_['zIndex'] !== 0) {
-//             lst.push(map.getLayers().array_[i])
-//         }
-//     }
-//     map.setLayers(lst)
-//
-//
-//     var features = source.getFeatures();
-//     var wktRepresenation;
-//     var Bound;
-//     console.log(features);
-//     if (features.length === 0) {
-//         if (zoneOfInterest.length === 0) {
-//             console.log("no shapes");
-//         } else {
-//             wktRepresenation = varwkt;
-//             Bound = varbound;
-//         }
-//     } else {
-//         var format = new WKT();
-//         var geom = [];
-//         if (features.length === 1) {
-//             wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform(projection.value, 'EPSG:3857'));
-//             Bound = features[0].getGeometry().getExtent();
-//             console.log(Bound)
-//
-//             zoneOfInterest = features;
-//             console.log(zoneOfInterest)
-//
-//             varwkt = wktRepresenation;
-//             varbound = Bound;
-//         } else {
-//             // TODO: сделать не только для двух полигонов
-//             var olGeom = new UnaryUnionOp(features[0].getGeometry(), features[1].getGeometry());
-//             wktRepresenation = format.writeGeometry(olGeom._geomFact);
-//             Bound = olGeom._geomFact.getExtent();
-//         }
-//     }
-//
-//     // TODO
-//     // const my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_2}?SERVICE=WMS&REQUEST=GetMap&SHOWLOGO=false&VERSION=1.3.0&LAYERS=NATURAL-COLOR&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=2018-03-29/2018-05-29&GEOMETRY=${wktRepresenation}`
-//     //my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_2}?SERVICE=WMS&REQUEST=GetMap&CRS=${projection.value}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=NATURAL-COLOR&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=${startDate0}/${startDate}&GEOMETRY=${wktRepresenation}`
-//     my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_1}?SERVICE=WMS&REQUEST=GetMap&CRS=${projection.value}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=VV&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=${startDate0}/${startDate}&GEOMETRY=${wktRepresenation}`
-//     localStorage.setItem('url2', my_str)
-//     var img_ext = olProj.transformExtent(Bound, projection.value, projection.value) // EPSG:4326 3857
-//     var imageLayer = new ImageLayer({
-//         source: new ImageStatic({
-//             url: my_str,
-//             imageExtent: img_ext // east, north, west, south
-//         }),
-//         zIndex: 0
-//     });
-//     map.addLayer(imageLayer);
-//     source.clear();
-// });
-
 const modifyStyle = new Style({
     image: new CircleStyle({
         radius: 5,
@@ -555,52 +359,12 @@ const modifyStyle = new Style({
         offsetX: 15,
     }),
 });
-// const modify = new Modify({source: source});
+
 const modify = new Modify({source: source, style: modifyStyle});
-
 map.addInteraction(modify);
+let draw, snap;
 
-let draw, snap; // global so we can remove them later
-
-// function addInteractions() {
-//     let val = document.getElementById('shapeType').value;
-//     if (val !== 'None') {
-//         let geometryFunction;
-//         if (val === 'Box') {
-//             val = 'Circle';
-//             geometryFunction = createBox();
-//         }
-//         draw = new Draw({
-//             source: source,
-//             type: val,
-//             // type: shapeSelect.value,
-//             geometryFunction: geometryFunction,
-//         });
-//         draw.on('drawstart', function (evt) {
-//             //... unset sketch
-//             source.clear();
-//         }, this);
-//         // draw.on('drawend', function (evt) {
-//         //     //... unset sketch
-//         //     map.removeInteraction(draw);
-//         // }, this);
-//         map.addInteraction(draw);
-//         snap = new Snap({source: source});
-//         map.addInteraction(snap);
-//     }
-// }
-
-/**
- * Handle change event.
- */
-// shapeSelect.onchange = function () {
-//     map.removeInteraction(draw);
-//     map.removeInteraction(snap);
-//     addInteractions();
-// };
-//addInteractions();
-
-function onChangeProjection() { // TODO 24.03
+function onChangeProjection() {
     const currentView = map.getView();
     const currentProjection = currentView.getProjection();
     const newProjection = getProjection(viewProjSelect.value);
@@ -627,7 +391,6 @@ function onChangeProjection() { // TODO 24.03
     var remember = [];
     for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
         if (map.getLayers().array_[i].values_['zIndex'] === 0) {
-            // remember.push(new Feature(map.getLayers().array_[i].getGeometry().clone().transform(currentView.getProjection(), viewProjSelect.value)))
             remember.push(map.getLayers().array_[i])
         }
     }
@@ -645,36 +408,28 @@ function onChangeProjection() { // TODO 24.03
         if (features.length === 1) {
             geom = features[0].getGeometry().clone().transform(currentProjection.code_, viewProjSelect.value)
             wktRepresenation = format.writeGeometry(geom);
-            // wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform(currentProjection.code_, viewProjSelect.value));
             Bound = geom.getExtent();
-//            console.log(geom)
-//            console.log(features[0])
         }
     }
 
     if (remember.length > 0) {
         my_str = `http://services.sentinel-hub.com/ogc/wms/${sent_2}?SERVICE=WMS&REQUEST=GetMap&CRS=${viewProjSelect.value}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=NATURAL-COLOR&MAXCC=1&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&FORMAT=image/jpeg&TIME=2018-03-29/2018-05-29&GEOMETRY=${wktRepresenation}`
-//        console.log(my_str)
+
         var img_ext = olProj.transformExtent(Bound, 'EPSG:3857', 'EPSG:3857') // EPSG:4326 3857
         var imageLayer = new ImageLayer({
             source: new ImageStatic({
                 url: my_str,
-                imageExtent: img_ext // east, north, west, south
+                imageExtent: img_ext
             }),
             zIndex: 0
         });
         map.addLayer(imageLayer);
-//        console.log(map.getLayers())
     }
 }
-
-//viewProjSelect.addEventListener('change', onChangeProjection);
 
 
 // ----------------------------------------------------------------------
 const url = 'http://localhost:8000'
-
-// var orderApi = Vue.resource('http://localhost:8000/v1/order')
 
 function showRegisterPage() {
     $('#register_page').show()
@@ -768,7 +523,6 @@ document.getElementById("to_login_page_from_reg").addEventListener('click', func
 });
 
 document.getElementById("regSubmit").addEventListener('click', async function () {
-//    console.log("reg")
     const username = document.getElementById("regLogin").value.toString();
     const password = document.getElementById("regPwd").value.toString();
     const confirmed = document.getElementById("repeatPwd").value.toString();
@@ -791,7 +545,6 @@ document.getElementById("regSubmit").addEventListener('click', async function ()
 
     if (response.ok) {
         response = await response.json()
-//        console.log(response)
         showLoginPage()
     }
 });
@@ -814,7 +567,6 @@ document.getElementById("logSubmit").addEventListener('click', async function ()
         if (response.ok) {
             response = await response.json()
             localStorage.setItem('Token', "Bearer " + response["token"])
-//            console.log(response)
             app.msg = localStorage.getItem("Token")
             clearLoginPage()
             showMainPage()
@@ -829,22 +581,15 @@ const interval = setInterval(function () {
     const url_ = 'http://localhost:8000/orders'
     const token = localStorage.getItem("Token")
 
-//    console.log(token)
     fetch(url_, {
         method: "GET",
         headers: {"Accept": 'application/json', "Content-type": 'application/json', "Authorization": token}
     }).then(response => response.json()).then(data => {
-//        console.log(data)
         updateOrders()
     })
 
 
 }, 5000);
-
-// document.getElementById("StepaBtn").addEventListener('click', function () {
-//     sendOrder()
-// });
-
 
 document.getElementById("deleteAccount").addEventListener('click', async function () {
     const url_ = 'http://localhost:8000/me'
@@ -857,10 +602,7 @@ document.getElementById("deleteAccount").addEventListener('click', async functio
 
     if (response.ok) {
         clearLocalStorage()
-        // app.msg = ''
         showLoginPage()
-    } else {
-
     }
 });
 
@@ -870,7 +612,6 @@ document.getElementById("createNewOrder").addEventListener('click', function () 
 })
 
 function updateOrders() {
-//    console.log("UPDATE ORDERS")
     const url_ = 'http://localhost:8000/orders'
     const token = localStorage.getItem("Token")
 
@@ -957,15 +698,12 @@ function setUrl(startDate, finishDate, url, wktRepresenation) {
     if (startDate.length === 0) {
         startDate = "2020" + "-" + "06" + "-" + "02"
     }
-    // let finishDate = document.getElementById("finishDatepicker").value.split('/')
-    // finishDate = finishDate[2] + "-" + finishDate[0] + "-" + finishDate[1]
 
     const sent = 'b351739d-40a8-4e8a-b943-701ef8249e08'
     const layer = 'IW_VV_DB'
     console.log("SET_URL:", startDate, finishDate, url, wktRepresenation)
     const pr = 'EPSG:3857'
     my_str = `http://services.sentinel-hub.com/ogc/wms/${sent}?SERVICE=WMS&REQUEST=GetMap&CRS=${pr}&SHOWLOGO=false&VERSION=1.3.0&LAYERS=${layer}&MAXCC=1&WIDTH=256&HEIGHT=256&FORMAT=image/jpeg&TIME=${startDate}/${finishDate}&GEOMETRY=${wktRepresenation}`
-//    console.log(my_str)
     localStorage.setItem(url, my_str)
 }
 function getFirstImage(startDate, finishDate) {
@@ -979,36 +717,32 @@ function getFirstImage(startDate, finishDate) {
     map.setLayers(lst)
 
     var features = source.getFeatures();
-    var wktRepresenation;
+    var wktRepresentation;
     var Bound;
     if (features.length === 0) {
         if (zoneOfInterest.length === 0) {
             console.log("no shapes");
         } else {
-            wktRepresenation = varwkt;
+            wktRepresentation = varwkt;
             Bound = varbound;
         }
     } else {
         var format = new WKT();
         var geom = [];
         if (features.length === 1) {
-            wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform('EPSG:3857', 'EPSG:3857'));
+            wktRepresentation = format.writeGeometry(features[0].getGeometry().clone().transform('EPSG:3857', 'EPSG:3857'));
             Bound = features[0].getGeometry().getExtent();
-//            console.log(Bound)
-
             zoneOfInterest = features;
-//            console.log(zoneOfInterest)
 
-            varwkt = wktRepresenation;
+            varwkt = wktRepresentation;
             varbound = Bound;
         } else {
-            // TODO: сделать не только для двух полигонов
             var olGeom = new UnaryUnionOp(features[0].getGeometry(), features[1].getGeometry());
-            wktRepresenation = format.writeGeometry(olGeom._geomFact);
+            wktRepresentation = format.writeGeometry(olGeom._geomFact);
             Bound = olGeom._geomFact.getExtent();
         }
     }
-    setUrl(startDate, finishDate, 'url', wktRepresenation)
+    setUrl(startDate, finishDate, 'url', wktRepresentation)
     var img_ext = olProj.transformExtent(Bound, 'EPSG:3857', 'EPSG:3857') // EPSG:4326 3857
     var imageLayer = new ImageLayer({
         source: new ImageStatic({
@@ -1022,56 +756,6 @@ function getFirstImage(startDate, finishDate) {
 }
 
 function getSecondImage(startDate, sat) {
-//    var lst = [];
-//    for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
-//        if (map.getLayers().array_[i].values_['zIndex'] !== 0) {
-//            lst.push(map.getLayers().array_[i])
-//        }
-//    }
-//
-//    map.setLayers(lst)
-//
-//    var features = source.getFeatures();
-//    var wktRepresenation;
-//    var Bound;
-//    if (features.length === 0) {
-//        if (zoneOfInterest.length === 0) {
-//            console.log("no shapes");
-//        } else {
-//            wktRepresenation = varwkt;
-//            Bound = varbound;
-//        }
-//    } else {
-//        var format = new WKT();
-//        var geom = [];
-//        if (features.length === 1) {
-//            wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform(projection.value, 'EPSG:3857'));
-//            Bound = features[0].getGeometry().getExtent();
-//            console.log(Bound)
-//
-//            zoneOfInterest = features;
-//            console.log(zoneOfInterest)
-//
-//            varwkt = wktRepresenation;
-//            varbound = Bound;
-//        } else {
-//            // TODO: сделать не только для двух полигонов
-//            var olGeom = new UnaryUnionOp(features[0].getGeometry(), features[1].getGeometry());
-//            wktRepresenation = format.writeGeometry(olGeom._geomFact);
-//            Bound = olGeom._geomFact.getExtent();
-//        }
-//    }
-//    setUrl(startDate, 'url2', wktRepresenation, sat)
-//    var img_ext = olProj.transformExtent(Bound, projection.value, projection.value) // EPSG:4326 3857
-//    var imageLayer = new ImageLayer({
-//        source: new ImageStatic({
-//            url: my_str,
-//            imageExtent: img_ext // east, north, west, south
-//        }),
-//        zIndex: 0
-//    });
-//    map.addLayer(imageLayer);
-//    source.clear();
 }
 
 Vue.component('order-card-row', {
@@ -1220,21 +904,6 @@ Vue.component('order-card-row', {
             if (date1.length > 0 && date2.length > 0) {
                 getFirstImage(date1, date2)
             }
-//            if (this.show_3 === false) {
-//                getFirstImage("", sat)
-//            } else {
-//                const date1 = document.getElementById("startDatepicker").value
-//                const date2 = document.getElementById("finishDatepicker").value
-//                if (date1.length > 0 && date2.length > 0) {
-//
-//                } else if (date1.length > 0) {
-//                    getFirstImage(document.getElementById("startDatepicker").value, sat)
-//                } else if (date2.length > 0) {
-//                    getSecondImage(document.getElementById("finishDatepicker").value, sat)
-//                } else {
-//                    getFirstImage("", sat)
-//                }
-//            }
         },
         show1() {
             if (this.show_1 === true) {
@@ -1290,7 +959,6 @@ Vue.component('order-row', {
                     '<div v-if="order.status === true"><div>Завершен: {{new Date(order.finishedAt).toLocaleString("ru-RU")}}</div></div>' +
                     '<div><button v-if="isReady === true" @click="showResult(order.result)" class="btn btn-primary m-1">РЕЗУЛЬТАТ</button></div>' +
                     '<div><button v-if="isReady === true" @click="showImage(order.url, order.bbox)" class="btn btn-primary m-1">ПОКАЗАТЬ СНИМОК</button></div>' +
-//                    '<div><button v-if="isReady === true" @click="hideImage()" class="btn btn-primary m-1">СКРЫТЬ СНИМОК</button></div>' +
                     '<div><button @click="deleteOrder(order)" class="btn btn-danger">Удалить заказ</button></div>' +
                 '</div>' +
             '</div>' +
@@ -1302,7 +970,6 @@ Vue.component('order-row', {
                     '<div v-if="order.status === true"><div>Завершен: {{new Date(order.finishedAt).toLocaleString("ru-RU")}}</div></div>' +
                     '<div><button v-if="isReady === true" @click="showResult(order.result)" class="btn btn-primary m-1">РЕЗУЛЬТАТ</button></div>' +
                     '<div><button v-if="isReady === true" @click="showImage(order.url, order.bbox)" class="btn btn-primary m-1">ПОКАЗАТЬ СНИМОК</button></div>' +
-//                    '<div><button v-if="isReady === true" @click="hideImage()" class="btn btn-primary m-1">СКРЫТЬ СНИМОК</button></div>' +
                     '<div><button @click="deleteOrder(order)" class="btn btn-danger">Удалить заказ</button></div>' +
                 '</div>' +
             '</div>' +
@@ -1350,7 +1017,7 @@ Vue.component('order-row', {
             map.setLayers(lst)
 
             var features = source.getFeatures();
-            var wktRepresenation;
+            var wktRepresentation;
             var Bound;
             if (features.length === 0) {
                 console.log('no shapes');
@@ -1359,18 +1026,17 @@ Vue.component('order-row', {
                 var format = new WKT();
                 var geom = [];
                 if (features.length === 1) {
-                    wktRepresenation = format.writeGeometry(features[0].getGeometry().clone().transform('EPSG:3857', 'EPSG:3857'));
+                    wktRepresentation = format.writeGeometry(features[0].getGeometry().clone().transform('EPSG:3857', 'EPSG:3857'));
                     Bound = features[0].getGeometry().getExtent();
                 } else {
-                    // TODO: сделать не только для двух полигонов
                     var olGeom = new UnaryUnionOp(features[0].getGeometry(), features[1].getGeometry());
-                    wktRepresenation = format.writeGeometry(olGeom._geomFact);
+                    wktRepresentation = format.writeGeometry(olGeom._geomFact);
                     Bound = olProj.transformExtent(olGeom._geomFact.getExtent(), 'EPSG:3857', 'EPSG:3857');
                 }
             }
 
             my_str = res.replace('tiff', 'jpeg')
-            var img_ext = Bound // EPSG:4326 3857
+            var img_ext = Bound
 
             var imageLayer = new ImageLayer({
                 source: new ImageStatic({
@@ -1383,12 +1049,6 @@ Vue.component('order-row', {
             source.clear();
         },
         showResult(res) {
-            //            var lst_clear = [];
-//            for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
-//                if (map.getLayers().array_[i].values_['zIndex'] !== 1 || map.getLayers().array_[i].values_['zIndex'] !== 3) {
-//                    lst_clear.push(map.getLayers().array_[i])
-//                }
-//            }
             var lst_keep = [];
             for (let i = 0, ii = map.getLayers().array_.length; i < ii; ++i) {
                 if (map.getLayers().array_[i].values_['zIndex'] === 3) {
@@ -1401,15 +1061,7 @@ Vue.component('order-row', {
                 map.addLayer(lst_keep[i])
             }
 
-//            console.log(res);
             var vectorSource;
-//            var colour = [
-//                'rgba(0, 0, 255, 1.0)',
-//                'rgba(255, 255, 0, 1.0)',
-//                'rgba(255, 128, 0, 1.0)',
-//                'rgba(255, 0, 0, 1.0)',
-//                'rgba(0, 255, 0, 1.0)',
-//            ];
             var colour = [
                 'rgba(0, 0, 255, 0.4)',
                 'rgba(255, 255, 0, 0.4)',
@@ -1421,16 +1073,16 @@ Vue.component('order-row', {
                 if (res.split('\n')[i].length < 10){
                     continue;
                 }
-                var coords = JSON.parse(res.split('\n')[i]).features[0].geometry.coordinates;
+                var coordinates = JSON.parse(res.split('\n')[i]).features[0].geometry.coordinates;
                 var feature;
                 if ((res.split('\n')[i]).includes('MultiPolygon')){
                     feature = new Feature({
-                        geometry: new MultiPolygon(coords)
+                        geometry: new MultiPolygon(coordinates)
                     });
                 }
                 else{
                     feature = new Feature({
-                        geometry: new Polygon(coords)
+                        geometry: new Polygon(coordinates)
                     });
                 }
                 vectorSource = new VectorSource({
@@ -1451,30 +1103,6 @@ Vue.component('order-row', {
                             );
             }
             map.getView().fit(vectorSource.getExtent());
-//            console.log(res.split('\n')[1]);
-//            var coords = JSON.parse(res.split('\n')[1]).features[0].geometry.coordinates;
-//
-//            const feature = new Feature({
-//                geometry: new MultiPolygon(coords)
-//            });
-//            const vectorSource = new VectorSource({
-//                features: [feature],
-//            });
-//            lst.push(vectorSource);
-//            map.addLayer(
-//                new VectorLayer({
-//                    source: vectorSource,
-//                    zIndex: 3,
-//                    style: {
-//                            'fill-color': 'rgba(255, 0, 0, 0.2)',
-//                            'stroke-color': '#000000',
-//                            'stroke-width': 2,
-//                            'circle-radius': 5,
-//                            'circle-fill-color': '#ff0000',
-//                        },
-//                })
-//            );
-//            map.getView().fit(vectorSource.getExtent());
         }
     }
 });
