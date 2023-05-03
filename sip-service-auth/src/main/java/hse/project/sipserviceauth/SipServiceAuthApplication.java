@@ -108,22 +108,18 @@ public class SipServiceAuthApplication implements WebMvcConfigurer {
             }
 
             if (orders.size() != 0) {
-                System.out.println("Start Python");
+                System.out.println("Start Python 1");
 
                 Order order = orders.peek();
-
-//                String model = order.getModel();
-//                String satellite = order.getSatellite();
                 String order_url = order.getUrl();
-//                String order_url2 = order.getUrl2();
                 String order_id = order.getId().toString();
                 String param_url = "\"" + order_url + "\"";
-//                String param_url2 = "\"" + order_url2 + "\"";
 
                 try {
                     ProcessBuilder pb = new ProcessBuilder(
                             "C:/diploma/sip-service-main/venv/Scripts/python.exe",
-                            "C:/diploma/sip-service-main/sip-service-auth/src/main/python/main.py",
+//                            "C:/diploma/sip-service-main/sip-service-auth/src/main/python/old_main.py",
+                            "C:/diploma/sip-service-main/sip-service-auth/src/main/python/etl.py",
                             order_id,
                             param_url
                     );
@@ -131,13 +127,28 @@ public class SipServiceAuthApplication implements WebMvcConfigurer {
                     Process p = pb.start();
                     p.waitFor();
                 } catch (IOException | InterruptedException e) {
-//                    e.printStackTrace();
-                    System.out.println("ERRRRRRRRR");
-                    System.out.println("ERRRRRRRRR");
-                    System.out.println("ERRRRRRRRR");
+                    e.printStackTrace();
                 }
+                System.out.println("Finish Python 1");
+
+                System.out.println("Start Python 2");
+
+                try {
+                    ProcessBuilder pb = new ProcessBuilder(
+                            "C:/diploma/sip-service-main/venv/Scripts/python.exe",
+//                            "C:/diploma/sip-service-main/sip-service-auth/src/main/python/old_main.py",
+                            "C:/diploma/sip-service-main/sip-service-auth/src/main/python/predict.py",
+                            order_id,
+                            param_url
+                    );
+                    pb.redirectErrorStream(true);
+                    Process p = pb.start();
+                    p.waitFor();
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Finish Python 2");
                 orders.remove();
-                System.out.println("Finish Python");
             }
         }
     }

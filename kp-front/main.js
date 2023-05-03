@@ -47,6 +47,7 @@ import Feature from "./node_modules/ol/Feature.js";
 // import Bounds, Size
 
 import MultiPolygon from './node_modules/ol/geom/MultiPolygon.js';
+import Polygon from './node_modules/ol/geom/Polygon.js';
 import {Extent} from "ol/interaction.js";
 import {or} from "ol/format/filter.js";
 
@@ -58,7 +59,8 @@ const key = '4Z4vZj5CICocrdP4mCFb';
 const attributions =
     '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
     '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
-const viewProjSelect = document.getElementById('projection');
+//const viewProjSelect = document.getElementById('projection');
+const viewProjSelect = "EPSG:3857";
 const projection = getProjection(viewProjSelect);
 const scaleControl = new ScaleLine({
     units: 'metric',
@@ -132,11 +134,10 @@ let map = new Map({
 //const extent = getProjection(projection.value).getExtent().slice();
 extent[0] += extent[0];
 extent[2] += extent[2];
-const projectionSelect = document.getElementById('projection');
-projectionSelect.addEventListener('change', function (event) {
-    mousePositionControl.setProjection(event.target.value);
-    mousePositionControl2.setProjection(event.target.value);
-});
+//projectionSelect.addEventListener('change', function (event) {
+//    mousePositionControl.setProjection(event.target.value);
+//    mousePositionControl2.setProjection(event.target.value);
+//});
 const precisionInput = document.getElementById('precision');
 precisionInput.addEventListener('change', function (event) {
     const format = createStringXY(event.target.valueAsNumber);
@@ -667,7 +668,7 @@ function onChangeProjection() { // TODO 24.03
     }
 }
 
-viewProjSelect.addEventListener('change', onChangeProjection);
+//viewProjSelect.addEventListener('change', onChangeProjection);
 
 
 // ----------------------------------------------------------------------
@@ -1400,33 +1401,80 @@ Vue.component('order-row', {
                 map.addLayer(lst_keep[i])
             }
 
-            console.log(res);
-            console.log(res.split('\n')[0]);
-            var coords = JSON.parse(res.split('\n')[0]).features[0].geometry.coordinates;
-
-            const feature = new Feature({
-                geometry: new MultiPolygon(coords)
-            });
-
-            const vectorSource = new VectorSource({
-                features: [feature],
-            });
-
-            lst.push(vectorSource);
-            map.addLayer(
-                new VectorLayer({
-                    source: vectorSource,
-                    zIndex: 3,
-                    style: {
-                            'fill-color': 'rgba(255, 0, 0, 0.2)',
-                            'stroke-color': '#000000',
-                            'stroke-width': 2,
-                            'circle-radius': 5,
-                            'circle-fill-color': '#ff0000',
-                        },
-                })
-            );
+//            console.log(res);
+            var vectorSource;
+//            var colour = [
+//                'rgba(0, 0, 255, 1.0)',
+//                'rgba(255, 255, 0, 1.0)',
+//                'rgba(255, 128, 0, 1.0)',
+//                'rgba(255, 0, 0, 1.0)',
+//                'rgba(0, 255, 0, 1.0)',
+//            ];
+            var colour = [
+                'rgba(0, 0, 255, 0.4)',
+                'rgba(255, 255, 0, 0.4)',
+                'rgba(255, 128, 0, 0.4)',
+                'rgba(255, 0, 0, 0.4)',
+                'rgba(0, 128, 0, 0.4)',
+            ];
+            for (let i = 0, ii = res.split('\n').length; i < ii; ++i) {
+                if (res.split('\n')[i].length < 10){
+                    continue;
+                }
+                var coords = JSON.parse(res.split('\n')[i]).features[0].geometry.coordinates;
+                var feature;
+                if ((res.split('\n')[i]).includes('MultiPolygon')){
+                    feature = new Feature({
+                        geometry: new MultiPolygon(coords)
+                    });
+                }
+                else{
+                    feature = new Feature({
+                        geometry: new Polygon(coords)
+                    });
+                }
+                vectorSource = new VectorSource({
+                    features: [feature],
+                });
+                map.addLayer(
+                                new VectorLayer({
+                                    source: vectorSource,
+                                    zIndex: 3,
+                                    style: {
+                                            'fill-color': colour[i],
+                                            'stroke-color': '#666666',
+                                            'stroke-width': 2,
+                                            'circle-radius': 5,
+                                            'circle-fill-color': '#666666',
+                                        },
+                                })
+                            );
+            }
             map.getView().fit(vectorSource.getExtent());
+//            console.log(res.split('\n')[1]);
+//            var coords = JSON.parse(res.split('\n')[1]).features[0].geometry.coordinates;
+//
+//            const feature = new Feature({
+//                geometry: new MultiPolygon(coords)
+//            });
+//            const vectorSource = new VectorSource({
+//                features: [feature],
+//            });
+//            lst.push(vectorSource);
+//            map.addLayer(
+//                new VectorLayer({
+//                    source: vectorSource,
+//                    zIndex: 3,
+//                    style: {
+//                            'fill-color': 'rgba(255, 0, 0, 0.2)',
+//                            'stroke-color': '#000000',
+//                            'stroke-width': 2,
+//                            'circle-radius': 5,
+//                            'circle-fill-color': '#ff0000',
+//                        },
+//                })
+//            );
+//            map.getView().fit(vectorSource.getExtent());
         }
     }
 });

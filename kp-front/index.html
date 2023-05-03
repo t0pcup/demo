@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-<!--    <link rel="icon" type="image/svg+xml" href="/vite.svg"/>-->
     <link rel="shortcut icon" type="image/x-icon" href="logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
@@ -139,12 +138,9 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.3"></script>
-<!--    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
-<!--    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
-<!--    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">-->
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="//resources/demos/style.css">
 </head>
 <body>
 <div class="preloader">
@@ -366,29 +362,12 @@
                 <div class="col-auto">
 
                     <div class="input-group" style="display: inline-block; text-align: center; align-items: center">
-                        <!--              <label class="input-group-text" for="shapeType">Geometry type:</label>-->
-                        <!--              <select class="form-select" id="shapeType">-->
-                        <!--                  <option value="None">None</option>-->
-                        <!--                  <option value="Polygon">Polygon</option>-->
-                        <!--                  <option value="Box">Box</option>-->
-                        <!--                  &lt;!&ndash;              <option value="Point">Point</option>&ndash;&gt;-->
-                        <!--                  &lt;!&ndash;              <option value="LineString">LineString</option>&ndash;&gt;-->
-                        <!--                  &lt;!&ndash;              <option value="Square">Square</option>&ndash;&gt;-->
-                        <!--                  &lt;!&ndash;              <option value="Circle">Circle</option>&ndash;&gt;-->
-                        <!--              </select>-->
                     </div>
 
                 </div>
             </div>
         </div>
 
-        <!--            <div class="orders_list" id="orders_list">-->
-        <!--&lt;!&ndash;                <p>Start date: <input type="text" id="startDatepicker"></p>&ndash;&gt;-->
-        <!--&lt;!&ndash;                <p>Finish date: <input type="text" id="finishDatepicker"></p>&ndash;&gt;-->
-        <!--                <button class="searchBtn" type="button" id="imgSearchBtn"><span>GET IMAGE</span></button>-->
-        <!--                <button class="searchBtn2" type="button" id="imgSearchBtn2"><span>GET IMAGE 2</span></button>-->
-        <!--                <button class="StepaBtn" type="button" id="StepaBtn"><span>CREATE ORDER</span></button>-->
-        <!--            </div>-->
         <div id="overlay" class="overlay">
             <div>EPSG:4326
                 <div id="mouse-position"></div>
@@ -405,11 +384,7 @@
                     <option value="layer_schema">Schema</option>
                     <option value="layer_sat">Satellite</option>
                 </select>
-                <p id="projection">Projection: EPSG:3857</p>
-<!--                <select id="projection">-->
-<!--                    <option value="EPSG:3857">EPSG:3857</option>-->
-<!--                </select>-->
-
+<!--                <p id="projection">Projection: EPSG:3857</p>-->
             </form>
         </div>
     </div>
@@ -476,7 +451,6 @@
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="text" id="login" class="form-control"
                                                        placeholder="логин*"/>
-                                                <!--                      <label class="form-label" for="form3Example1c">Your Name</label>-->
                                             </div>
                                         </div>
 
@@ -485,7 +459,6 @@
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="password" id="currPwd" class="form-control"
                                                        placeholder="текущий пароль*"/>
-                                                <!--                      <label class="form-label" for="form3Example3c">Your Email</label>-->
                                             </div>
                                         </div>
 
@@ -494,7 +467,6 @@
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="password" id="newPwd" class="form-control"
                                                        placeholder="новый пароль*"/>
-                                                <!--                      <label class="form-label" for="form3Example3c">Your Email</label>-->
                                             </div>
                                         </div>
 
@@ -503,7 +475,6 @@
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="text" id="newSurname" class="form-control"
                                                        placeholder="фамилия"/>
-                                                <!--                      <label class="form-label" for="form3Example4c">Password</label>-->
                                             </div>
                                         </div>
 
@@ -511,7 +482,6 @@
                                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="text" id="newName" class="form-control" placeholder="имя"/>
-                                                <!--                      <label class="form-label" for="form3Example4c">Password</label>-->
                                             </div>
                                         </div>
 
@@ -520,7 +490,6 @@
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="text" id="newPatronymic" class="form-control"
                                                        placeholder="отчество"/>
-                                                <!--                      <label class="form-label" for="form3Example4c">Password</label>-->
                                             </div>
                                         </div>
                                         <div class="text-center">
@@ -538,23 +507,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--                                        <div class="d-flex justify-content-center mb-3 mb-lg-4 gap-2" style="margin-left: 1.5rem!important;">-->
-                                        <!--                                            <button id="to_workbench_page" type="button" class="btn btn-primary btn-lg">-->
-                                        <!--                                                Вернуться-->
-                                        <!--                                            </button>-->
-                                        <!--                                            <button id="newSubmit" type="button" class="btn btn-primary btn-lg">-->
-                                        <!--                                                Сохранить-->
-                                        <!--                                            </button>-->
-                                        <!--                                            <button id="logOut" type="button" class="btn btn-primary btn-lg">Выйти-->
-                                        <!--                                            </button>-->
-                                        <!--                                        </div>-->
-
                                         <p class="text-center text-muted mt-1 mb-0">
                                             <a id="to_delete_acc_page" data-bs-toggle="modal"
                                                data-bs-target="#exampleModal" class="fw-bold text-body"
                                                style="cursor: pointer;"><u style="color: red">Удалить аккаунт</u></a>
                                         </p>
-
                                     </form>
                                 </div>
                             </div>
@@ -566,8 +523,8 @@
     </section>
 </div>
 
-<script type="module" src="/main.js"></script>
-<script type="module" src="/controller.js"></script>
+<script type="module" src="./main.js"></script>
+<!--<script type="module" src="./controller.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
